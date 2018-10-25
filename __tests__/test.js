@@ -90,50 +90,50 @@ test('loading error', async () => {
   expect(component.toJSON()).toMatchSnapshot(); // errored
 });
 
-test('server side rendering', async () => {
-  let LoadableMyComponent = Loadable({
-    loader: createLoader(400, () => require('../__fixtures__/component')),
-    loading: MyLoadingComponent,
-  });
+// test('server side rendering', async () => {
+//   let LoadableMyComponent = Loadable({
+//     loader: createLoader(400, () => require('../__fixtures__/component')),
+//     loading: MyLoadingComponent,
+//   });
 
-  await Loadable.preloadAll();
+//   await Loadable.preloadAll();
 
-  let component = renderer.create(<LoadableMyComponent prop="baz" />);
+//   let component = renderer.create(<LoadableMyComponent prop="baz" />);
 
-  expect(component.toJSON()).toMatchSnapshot(); // serverside
-});
+//   expect(component.toJSON()).toMatchSnapshot(); // serverside
+// });
 
-test('server side rendering es6', async () => {
-  let LoadableMyComponent = Loadable({
-    loader: createLoader(400, () => require('../__fixtures__/component.es6')),
-    loading: MyLoadingComponent,
-  });
+// test('server side rendering es6', async () => {
+//   let LoadableMyComponent = Loadable({
+//     loader: createLoader(400, () => require('../__fixtures__/component.es6')),
+//     loading: MyLoadingComponent,
+//   });
 
-  await Loadable.preloadAll();
+//   await Loadable.preloadAll();
 
-  let component = renderer.create(<LoadableMyComponent prop="baz" />);
+//   let component = renderer.create(<LoadableMyComponent prop="baz" />);
 
-  expect(component.toJSON()).toMatchSnapshot(); // serverside
-});
+//   expect(component.toJSON()).toMatchSnapshot(); // serverside
+// });
 
-test('preload', async () => {
-  let LoadableMyComponent = Loadable({
-    loader: createLoader(400, () => MyComponent),
-    loading: MyLoadingComponent
-  });
+// test('preload', async () => {
+//   let LoadableMyComponent = Loadable({
+//     loader: createLoader(400, () => MyComponent),
+//     loading: MyLoadingComponent
+//   });
 
-  let promise = LoadableMyComponent.preload();
-  await waitFor(200);
+//   let promise = LoadableMyComponent.preload();
+//   await waitFor(200);
 
-  let component1 = renderer.create(<LoadableMyComponent prop="baz" />);
+//   let component1 = renderer.create(<LoadableMyComponent prop="baz" />);
 
-  expect(component1.toJSON()).toMatchSnapshot(); // still loading...
-  await promise;
-  expect(component1.toJSON()).toMatchSnapshot(); // success
+//   expect(component1.toJSON()).toMatchSnapshot(); // still loading...
+//   await promise;
+//   expect(component1.toJSON()).toMatchSnapshot(); // success
 
-  let component2 = renderer.create(<LoadableMyComponent prop="baz" />);
-  expect(component2.toJSON()).toMatchSnapshot(); // success
-});
+//   let component2 = renderer.create(<LoadableMyComponent prop="baz" />);
+//   expect(component2.toJSON()).toMatchSnapshot(); // success
+// });
 
 test('render', async () => {
   let LoadableMyComponent = Loadable({
@@ -201,80 +201,80 @@ test('loadable map error', async () => {
   expect(component.toJSON()).toMatchSnapshot(); // success
 });
 
-describe('preloadReady', () => {
-  beforeEach(() => {
-    global.__webpack_modules__ = { 1: true, 2: true };
-  });
+// describe('preloadReady', () => {
+//   beforeEach(() => {
+//     global.__webpack_modules__ = { 1: true, 2: true };
+//   });
 
-  afterEach(() => {
-    delete global.__webpack_modules__;
-  });
+//   afterEach(() => {
+//     delete global.__webpack_modules__;
+//   });
 
-  test('undefined', async () => {
-    let LoadableMyComponent = Loadable({
-      loader: createLoader(200, () => MyComponent),
-      loading: MyLoadingComponent,
-    });
+//   test('undefined', async () => {
+//     let LoadableMyComponent = Loadable({
+//       loader: createLoader(200, () => MyComponent),
+//       loading: MyLoadingComponent,
+//     });
 
-    await Loadable.preloadReady();
+//     await Loadable.preloadReady();
 
-    let component = renderer.create(<LoadableMyComponent prop="baz" />);
+//     let component = renderer.create(<LoadableMyComponent prop="baz" />);
 
-    expect(component.toJSON()).toMatchSnapshot();
-  });
+//     expect(component.toJSON()).toMatchSnapshot();
+//   });
 
-  test('one', async () => {
-    let LoadableMyComponent = Loadable({
-      loader: createLoader(200, () => MyComponent),
-      loading: MyLoadingComponent,
-      webpack: () => [1],
-    });
+//   test('one', async () => {
+//     let LoadableMyComponent = Loadable({
+//       loader: createLoader(200, () => MyComponent),
+//       loading: MyLoadingComponent,
+//       webpack: () => [1],
+//     });
 
-    await Loadable.preloadReady();
+//     await Loadable.preloadReady();
 
-    let component = renderer.create(<LoadableMyComponent prop="baz" />);
+//     let component = renderer.create(<LoadableMyComponent prop="baz" />);
 
-    expect(component.toJSON()).toMatchSnapshot();
-  });
+//     expect(component.toJSON()).toMatchSnapshot();
+//   });
 
-  test('many', async () => {
-    let LoadableMyComponent = Loadable({
-      loader: createLoader(200, () => MyComponent),
-      loading: MyLoadingComponent,
-      webpack: () => [1, 2],
-    });
+//   test('many', async () => {
+//     let LoadableMyComponent = Loadable({
+//       loader: createLoader(200, () => MyComponent),
+//       loading: MyLoadingComponent,
+//       webpack: () => [1, 2],
+//     });
 
-    await Loadable.preloadReady();
+//     await Loadable.preloadReady();
 
-    let component = renderer.create(<LoadableMyComponent prop="baz" />);
+//     let component = renderer.create(<LoadableMyComponent prop="baz" />);
 
-    expect(component.toJSON()).toMatchSnapshot();
-  });
+//     expect(component.toJSON()).toMatchSnapshot();
+//   });
 
-  test('missing', async () => {
-    let LoadableMyComponent = Loadable({
-      loader: createLoader(200, () => MyComponent),
-      loading: MyLoadingComponent,
-      webpack: () => [1, 42],
-    });
+//   test('missing', async () => {
+//     let LoadableMyComponent = Loadable({
+//       loader: createLoader(200, () => MyComponent),
+//       loading: MyLoadingComponent,
+//       webpack: () => [1, 42],
+//     });
 
-    await Loadable.preloadReady();
+//     await Loadable.preloadReady();
 
-    let component = renderer.create(<LoadableMyComponent prop="baz" />);
+//     let component = renderer.create(<LoadableMyComponent prop="baz" />);
 
-    expect(component.toJSON()).toMatchSnapshot();
-  });
+//     expect(component.toJSON()).toMatchSnapshot();
+//   });
 
-  test('delay with 0', () => {
-    let LoadableMyComponent = Loadable({
-      loader: createLoader(300, () => MyComponent),
-      loading: MyLoadingComponent,
-      delay: 0,
-      timeout: 200,
-    });
-  
-    let loadingComponent = renderer.create(<LoadableMyComponent prop="foo" />);
-  
-    expect(loadingComponent.toJSON()).toMatchSnapshot(); // loading
-  });
-});
+//   test('delay with 0', () => {
+//     let LoadableMyComponent = Loadable({
+//       loader: createLoader(300, () => MyComponent),
+//       loading: MyLoadingComponent,
+//       delay: 0,
+//       timeout: 200,
+//     });
+
+//     let loadingComponent = renderer.create(<LoadableMyComponent prop="foo" />);
+
+//     expect(loadingComponent.toJSON()).toMatchSnapshot(); // loading
+//   });
+// });

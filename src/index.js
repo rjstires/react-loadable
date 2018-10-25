@@ -2,24 +2,8 @@
 const React = require("react");
 const PropTypes = require("prop-types");
 
-const ALL_INITIALIZERS = [];
-const READY_INITIALIZERS = [];
-
-function isWebpackReady(getModuleIds) {
-  if (typeof __webpack_modules__ !== "object") {
-    return false;
-  }
-
-  return getModuleIds().every(moduleId => {
-    return (
-      typeof moduleId !== "undefined" &&
-      typeof __webpack_modules__[moduleId] !== "undefined"
-    );
-  });
-}
-
-function load(loader) {
-  let promise = loader();
+function load(loader, props) {
+  let promise = loader(props);
 
   let state = {
     loading: true,
@@ -42,7 +26,7 @@ function load(loader) {
   return state;
 }
 
-function loadMap(obj) {
+function loadMap(obj, props) {
   let state = {
     loading: false,
     loaded: {},
@@ -53,7 +37,7 @@ function loadMap(obj) {
 
   try {
     Object.keys(obj).forEach(key => {
-      let result = load(obj[key]);
+      let result = load(obj[key], props);
 
       if (!result.loading) {
         state.loaded[key] = result.loaded;
@@ -117,27 +101,17 @@ function createLoadableComponent(loadFn, options) {
 
   let res = null;
 
-  function init() {
+  function init(props) {
     if (!res) {
-      res = loadFn(opts.loader);
+      res = loadFn(opts.loader, props);
     }
     return res.promise;
-  }
-
-  ALL_INITIALIZERS.push(init);
-
-  if (typeof opts.webpack === "function") {
-    READY_INITIALIZERS.push(() => {
-      if (isWebpackReady(opts.webpack)) {
-        return init();
-      }
-    });
   }
 
   return class LoadableComponent extends React.Component {
     constructor(props) {
       super(props);
-      init();
+      init(props);
 
       this.state = {
         error: res.error,
@@ -155,7 +129,7 @@ function createLoadableComponent(loadFn, options) {
     };
 
     static preload() {
-      return init();
+      return init(this.props);
     }
 
     componentWillMount() {
@@ -286,33 +260,5 @@ class Capture extends React.Component {
 }
 
 Loadable.Capture = Capture;
-
-function flushInitializers(initializers) {
-  let promises = [];
-
-  while (initializers.length) {
-    let init = initializers.pop();
-    promises.push(init());
-  }
-
-  return Promise.all(promises).then(() => {
-    if (initializers.length) {
-      return flushInitializers(initializers);
-    }
-  });
-}
-
-Loadable.preloadAll = () => {
-  return new Promise((resolve, reject) => {
-    flushInitializers(ALL_INITIALIZERS).then(resolve, reject);
-  });
-};
-
-Loadable.preloadReady = () => {
-  return new Promise((resolve, reject) => {
-    // We always will resolve, errors should be handled within loading UIs.
-    flushInitializers(READY_INITIALIZERS).then(resolve, resolve);
-  });
-};
 
 module.exports = Loadable;

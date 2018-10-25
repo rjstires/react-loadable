@@ -125,62 +125,6 @@ exports[`loading success 4`] = `
 </div>
 `;
 
-exports[`preload 1`] = `
-<div>
-  MyLoadingComponent 
-  {"isLoading":true,"pastDelay":false,"timedOut":false,"error":null}
-</div>
-`;
-
-exports[`preload 2`] = `
-<div>
-  MyComponent 
-  {"prop":"baz"}
-</div>
-`;
-
-exports[`preload 3`] = `
-<div>
-  MyComponent 
-  {"prop":"baz"}
-</div>
-`;
-
-exports[`preloadReady delay with 0 1`] = `
-<div>
-  MyLoadingComponent 
-  {"isLoading":true,"pastDelay":true,"timedOut":false,"error":null}
-</div>
-`;
-
-exports[`preloadReady many 1`] = `
-<div>
-  MyComponent 
-  {"prop":"baz"}
-</div>
-`;
-
-exports[`preloadReady missing 1`] = `
-<div>
-  MyLoadingComponent 
-  {"isLoading":true,"pastDelay":false,"timedOut":false,"error":null}
-</div>
-`;
-
-exports[`preloadReady one 1`] = `
-<div>
-  MyComponent 
-  {"prop":"baz"}
-</div>
-`;
-
-exports[`preloadReady undefined 1`] = `
-<div>
-  MyLoadingComponent 
-  {"isLoading":true,"pastDelay":false,"timedOut":false,"error":null}
-</div>
-`;
-
 exports[`render 1`] = `
 <div>
   MyLoadingComponent 
@@ -199,17 +143,5 @@ exports[`render 3`] = `
 <div>
   MyComponent 
   {"prop":"baz"}
-</div>
-`;
-
-exports[`server side rendering 1`] = `
-<div>
-  fixture1
-</div>
-`;
-
-exports[`server side rendering es6 1`] = `
-<div>
-  fixture2
 </div>
 `;

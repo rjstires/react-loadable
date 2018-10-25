@@ -5,10 +5,10 @@ import delay from '../utils/delay';
 import path from 'path';
 
 const LoadableExample = Loadable({
-  loader: () => import('./Example'),
+  loader: (props) => import('./Example'),
   loading: Loading,
 });
 
 export default function App() {
-  return <LoadableExample/>;
+  return <LoadableExample myProp={[1, 2, 3]} />;
 }
